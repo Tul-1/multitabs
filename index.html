@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <style>
+        .toggleContainer {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            width: 100%;
+            border-radius: 50px;
+            background: #343434;
+            font-weight: bold;
+            font-size: 300%;
+            color: #343434;
+            cursor: pointer;
+        }
+        .toggleContainer::before {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            left: 0%;
+            border-radius:50px;
+            background: linear-gradient(90deg,#8524A7, #7A33D4);
+            transition: all 0.3s;
+        }
+        .toggleCheckbox:checked + .toggleContainer::before {
+                left: 50%;
+        }
+        .toggleContainer div {
+            padding: 6px;
+            text-align: center;
+            height: 94px;
+            line-height: 82px;
+            z-index: 1;
+        }
+        .toggleCheckbox {
+            display: none;
+        }
+        .toggleCheckbox:checked + .toggleContainer div:first-child{
+            color: white;
+            transition: color 0.3s;
+        }
+        .toggleCheckbox:checked + .toggleContainer div:last-child{
+            color: #343434;
+            transition: color 0.3s;
+        }
+        .toggleCheckbox + .toggleContainer div:first-child{
+            color: #343434;
+            transition: color 0.3s;
+        }
+        .toggleCheckbox + .toggleContainer div:last-child{
+            color: white;
+            transition: color 0.3s;
+        }
+
+        .hide {
+          display: none;
+        }
+
+        body {
+          background-image: linear-gradient(90deg,#8524A7, #7A33D4);
+        }
+        </style>
+    </head>
+    <body>
+        <section class="section">
+            <div class="columns">
+              <div class="main column is-three-fifths is-offset-one-fifth">
+              <div class="box has-background-white-ter">
+              <h1 class="title">Open multiple tabs</h1>
+          
+              <form>
+
+                <div class="field">
+                    <input type="checkbox" id="toggle" class="toggleCheckbox" onclick="checkToggle()"/>
+                    <label for="toggle" class='toggleContainer'>
+                    <div>URL</div>   
+                    <div>Search</div>
+                    </label>
+                </div>
+
+                <div class="field">
+                  <label class="label" for="urls"><div class="urls">URLs</div><div class="search">Searches</div></label>
+                  <div class="control">
+                    <textarea class="textarea" id="urls" name="urls" rows="10" cols="50"></textarea>
+                  </div>
+                </div>
+          
+                <div class="field urls">
+                  <input type="checkbox" id="https" name="https" value="https">
+                  <label class="checkbox" for="https">Add 'https://' to beginning</label>
+                </div>
+          
+                <div class="field search">
+                  <label class="label" for="engine">Search engine ('%s' is replaced)</label>
+                  <div class="control">
+                    <input class="input" type="text" id="engine" name="engine" value="https://www.google.com/search?q=%s">
+                  </div>
+                </div>
+          
+                <div class="field">
+                  <label class="label" for="prepend">Prepend to all</label>
+                  <div class="control">
+                    <input class="input" type="text" id="prepend" name="prepend">
+                  </div>
+                </div>
+          
+                <div class="field">
+                  <label class="label" for="append">Append to all</label>
+                  <div class="control">
+                    <input class="input" type="text" id="append" name="append">
+                  </div>
+                </div>
+          
+                <div class="field urls">
+                  <div class="control">
+                    <button class="button is-info" style="width: 100%; height: 55px;" onclick="openUrls()">Open as URLs</button>
+                  </div>
+                </div>
+
+                <div class="field search">
+                  <div class="control">
+                    <button class="button is-info" style="width: 100%; height: 55px;" onclick="search()">Search</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            </div>
+            </div>
+          </section>
+        
+        <script>
+          s = Array.from(document.getElementsByClassName('search'))
+          u = Array.from(document.getElementsByClassName('urls'))
+
+          s.forEach(element => {
+            element.classList.add('hide')
+          });
+
+            function checkToggle() {
+                t = document.getElementById('toggle')
+                if (t.checked) {
+                  u.forEach(element => {
+                    element.classList.add('hide')
+                  });
+                  s.forEach(element => {
+                    element.classList.remove('hide')
+                  });
+                } else {
+                  u.forEach(element => {
+                    element.classList.remove('hide')
+                  });
+                  s.forEach(element => {
+                    element.classList.add('hide')
+                  });
+                }
+            }
+
+            function openUrls() {
+                a = document.getElementById('urls').value;
+                b = a.split("\n");
+                h = document.getElementById('https').checked;
+                prepend = document.getElementById('prepend').value
+                append = document.getElementById('append').value
+                for (let i = 0; i < b.length; i++) {
+                    const element = b[i];
+                    url = prepend + element + append;
+                    if (h) {
+                        url = 'https://' + url;
+                    }
+                    openInNewTab(url);
+                }
+            }
+
+            function search() {
+                a = document.getElementById('urls').value;
+                b = a.split("\n");
+                prepend = document.getElementById('prepend').value
+                append = document.getElementById('append').value
+                engine = document.getElementById('engine').value
+                if (!engine) {
+                    engine = 'https://www.google.com/search?q=%s'
+                }
+                for (let i = 0; i < b.length; i++) {
+                    const element = b[i];
+                    query = prepend + element + append;
+                    url = engine.replace('%s', query)
+                    openInNewTab(url)
+                }
+            }
+
+            function openInNewTab(url) {
+                window.open(url, '_blank');
+            }
+        </script>
+    </body>
+</html>
