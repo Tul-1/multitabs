@@ -7,6 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
         <link rel="icon" href="tabs.png">
         <style>
         .toggleContainer {
@@ -68,6 +69,48 @@
         body {
           background-image: linear-gradient(90deg,#8524A7, #7A33D4);
         }
+
+        .extra-info {
+          display: none;
+          line-height: 30px;
+          font-size: 12px;
+          height: 30px;
+          text-align: center;
+          animation: opac 2s;
+          opacity: 0;
+        }
+
+        @keyframes opac {
+          from {opacity: 0;}
+          to {opacity: 1;}
+        }
+
+        .info:hover .extra-info {
+          display: block;
+          opacity: 1;
+        }
+
+        .info {
+          font-size: 20px;
+          padding-left: 5px;
+          width: 20px;
+          border-radius: 15px;
+          transition: all 2s ease;
+        }
+
+        .info .icon-info-sign {
+          display: block
+        }
+
+        .info:hover .icon-info-sign {
+          display: none
+        }
+
+        .info:hover {
+          background-color: #0d316b;
+          width: 500px;
+          text-align: left !important;
+        }
         </style>
     </head>
     <body>
@@ -122,13 +165,13 @@
           
                 <div class="field urls">
                   <div class="control">
-                    <button class="button is-info" style="width: 100%; height: 55px;" onclick="openUrls()">Open as URLs</button>
+                    <button class="button is-info" style="width: 100%; height: 55px;" onclick="openUrls()">Open as URLs&nbsp;<div class="info"><i class="icon-info-sign"></i><span class="extra-info">Not working? Try enabling popups: <i class="icon-lock"></i> > Site Settings > Popups and Redirects > Allow</span></div></button>
                   </div>
                 </div>
 
                 <div class="field search">
                   <div class="control">
-                    <button class="button is-info" style="width: 100%; height: 55px;" onclick="search()">Search</button>
+                    <button class="button is-info" style="width: 100%; height: 55px;" onclick="search()">Search&nbsp;<div class="info"><i class="icon-info-sign"></i><span class="extra-info">Not working? Try enabling popups: <i class="icon-lock"></i> > Site Settings > Popups and Redirects > Allow</span></div></button>
                   </div>
                 </div>
               </form>
