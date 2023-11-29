@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
         <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/404b98ea94.js" crossorigin="anonymous"></script>
         <link rel="icon" href="tabs.png">
         <style>
         .toggleContainer {
@@ -72,9 +73,9 @@
 
         .extra-info {
           display: none;
-          line-height: 30px;
+          line-height: 27.5px;
           font-size: 12px;
-          height: 30px;
+          height: 27.5px;
           text-align: center;
           animation: opac 2s;
           opacity: 0;
@@ -91,25 +92,35 @@
         }
 
         .info {
-          font-size: 20px;
+          font-size: 24px;
           padding-left: 5px;
-          width: 20px;
+          width: 24px;
           border-radius: 15px;
           transition: all 2s ease;
         }
 
         .info .icon-info-sign {
-          display: block
+          display: block;
         }
 
         .info:hover .icon-info-sign {
-          display: none
+          display: none;
         }
 
         .info:hover {
           background-color: #0d316b;
           width: 500px;
           text-align: left !important;
+        }
+
+        .info-1:hover {
+          background-color: hsl(0, 0%, 86%) !important;
+          width: 250px
+        }
+
+        .param-padding {
+          padding-top: 1.25px;
+          padding-bottom: 1.25px;
         }
         </style>
     </head>
@@ -138,14 +149,14 @@
                 </div>
           
                 <div class="field urls">
-                  <input type="checkbox" id="https" name="https" value="https">
+                  <input type="checkbox" id="https" name="https" value="https" checked="true">
                   <label class="checkbox" for="https">Add 'https://' to beginning</label>
                 </div>
           
                 <div class="field search">
-                  <label class="label" for="engine">Search engine ('%s' is replaced)</label>
+                  <label class="label" for="engine"><div style="display: flex;">Search engine&nbsp;<div class="info-1 info"><i class="icon-info-sign param-padding"></i><span class="extra-info">'%s' is replaced with the search</span></div></div></label>
                   <div class="control">
-                    <input class="input" type="text" id="engine" name="engine" value="https://www.google.com/search?q=%s">
+                    <input class="input" type="text" id="engine" name="engine" placeholder="https://www.google.com/search?q=%s">
                   </div>
                 </div>
           
@@ -160,6 +171,13 @@
                   <label class="label" for="append">Append to all</label>
                   <div class="control">
                     <input class="input" type="text" id="append" name="append">
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label" for="append"><div style="display: flex;">Custom separator&nbsp;<div class="info-1 info"><i class="icon-info-sign param-padding"></i><span class="extra-info">RegEx <i class="fa-solid fa-check"></i></span></div></div></label>
+                  <div class="control">
+                    <input class="input" type="text" id="separator" name="separator" placeholder="\n">
                   </div>
                 </div>
           
@@ -209,7 +227,11 @@
 
             function openUrls() {
                 a = document.getElementById('urls').value;
-                b = a.split("\n");
+                sep = document.getElementById('separator').value;
+                if (!sep) {
+                  sep = "\n"
+                }
+                b = a.split(sep);
                 h = document.getElementById('https').checked;
                 prepend = document.getElementById('prepend').value
                 append = document.getElementById('append').value
@@ -225,7 +247,11 @@
 
             function search() {
                 a = document.getElementById('urls').value;
-                b = a.split("\n");
+                sep = document.getElementById('separator').value;
+                if (!sep) {
+                  sep = "\n"
+                }
+                b = a.split(sep);
                 prepend = document.getElementById('prepend').value
                 append = document.getElementById('append').value
                 engine = document.getElementById('engine').value
