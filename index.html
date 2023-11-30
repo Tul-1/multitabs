@@ -11,6 +11,22 @@
         <script src="https://kit.fontawesome.com/404b98ea94.js" crossorigin="anonymous"></script>
         <link rel="icon" href="tabs.png">
         <style>
+          ::-webkit-scrollbar {
+                width: 20px;
+                height: 20px;
+            }
+
+          ::-webkit-scrollbar-thumb {
+              background: rgba(90, 90, 90, 0.6);
+              border-radius: 50px;
+          }
+
+          ::-webkit-scrollbar-track {
+              background: linear-gradient(90deg,#8524A7, #7A33D4);
+          }
+
+
+
         .toggleContainer {
             position: relative;
             display: grid;
@@ -64,11 +80,16 @@
         }
 
         .hide {
-          display: none;
+          display: none !important;
         }
 
         body {
-          background-image: linear-gradient(90deg,#8524A7, #7A33D4);
+          background-image: linear-gradient(90deg,#8524A7, #7A33D4) !important;
+          overflow-y: hidden;
+        }
+
+        html {
+          background-color: inherit;
         }
 
         .extra-info {
@@ -118,9 +139,38 @@
           width: 250px
         }
 
+        .info-1 .extra-info {
+          overflow: hidden;
+        }
+
+        .info-2:hover {
+          width: 200px !important;
+          margin-right: 10px;
+        }
+
+        .info-3:hover {
+          width: 500px !important;
+        }
+
+        .info-2 {
+          transition: all 1s ease;
+        }
+
+        .info-2 .extra-info {
+          height: 40px;
+          line-height: 40px;
+          animation: opac 0.5s !important;
+          overflow: hidden;
+        }
+
         .param-padding {
           padding-top: 1.25px;
           padding-bottom: 1.25px;
+        }
+
+        .param-padding-1 {
+          padding-top: 7px;
+          padding-bottom: 7px;
         }
         </style>
     </head>
@@ -147,37 +197,32 @@
                     <textarea class="textarea" id="urls" name="urls" rows="10" cols="50"></textarea>
                   </div>
                 </div>
+
+                <div class="field is-grouped">
+                  <div class="control" style="width: 50%;">
+                    <input class="input" type="text" id="prepend" name="prepend" placeholder="Prepend to all">
+                  </div>
+                  <div class="control is-expanded">
+                    <input class="input" type="text" id="append" name="append" placeholder="Append to all">
+                  </div>
+                </div>
+
+                <div class="field" style="display: flex; gap: 10px;">
+                  <label class="label" for="append" style="margin: 0 0 0 0; height: 40px; line-height: 40px; min-width: 170px;"><div style="display: flex;"><div style="min-width: 140px;">Custom separator&nbsp;</div><div class="info-2 info-1 info"><i class="icon-info-sign param-padding param-padding-1"></i><span class="extra-info">RegEx <i class="fa-solid fa-check"></i></span></div></div></label>
+                  <div class="control" style="width: 100%;">
+                    <input class="input" type="text" id="separator" name="separator" placeholder="\n">
+                  </div>
+                </div>
           
                 <div class="field urls">
                   <input type="checkbox" id="https" name="https" value="https" checked="true">
                   <label class="checkbox" for="https">Add 'https://' to beginning</label>
                 </div>
-          
-                <div class="field search">
-                  <label class="label" for="engine"><div style="display: flex;">Search engine&nbsp;<div class="info-1 info"><i class="icon-info-sign param-padding"></i><span class="extra-info">'%s' is replaced with the search</span></div></div></label>
-                  <div class="control">
-                    <input class="input" type="text" id="engine" name="engine" placeholder="https://www.google.com/search?q=%s">
-                  </div>
-                </div>
-          
-                <div class="field">
-                  <label class="label" for="prepend">Prepend to all</label>
-                  <div class="control">
-                    <input class="input" type="text" id="prepend" name="prepend">
-                  </div>
-                </div>
-          
-                <div class="field">
-                  <label class="label" for="append">Append to all</label>
-                  <div class="control">
-                    <input class="input" type="text" id="append" name="append">
-                  </div>
-                </div>
 
-                <div class="field">
-                  <label class="label" for="append"><div style="display: flex;">Custom separator&nbsp;<div class="info-1 info"><i class="icon-info-sign param-padding"></i><span class="extra-info">RegEx <i class="fa-solid fa-check"></i></span></div></div></label>
-                  <div class="control">
-                    <input class="input" type="text" id="separator" name="separator" placeholder="\n">
+                <div class="field search" style="display: flex; gap: 10px;">
+                  <label class="label" for="append" style="margin: 0 0 0 0; height: 40px; line-height: 40px; min-width: 170px;"><div style="display: flex;"><div style="min-width: 140px;">Search engine&nbsp;</div><div class="info-3 info-2 info-1 info"><i class="icon-info-sign param-padding param-padding-1"></i><span class="extra-info">'%s' is replaced with the search</span></div></div></label>
+                  <div class="control" style="width: 100%;">
+                    <input class="input" type="text" id="engine" name="engine" placeholder="https://www.google.com/search?q=%s">
                   </div>
                 </div>
           
@@ -243,6 +288,16 @@
                     }
                     openInNewTab(url);
                 }
+            }
+
+            function urlClose() {
+              openUrls()
+              window.close()
+            }
+
+            function searchClose() {
+              search()
+              window.close()
             }
 
             function search() {
